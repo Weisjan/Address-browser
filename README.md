@@ -21,7 +21,6 @@ Ten skrypt importuje dane systemu adresowego, pobierając je z zewnętrznego ser
 
 2. Uzupełnij plik `config.ini`
     - dane bazy danych i hasło
-    - ścieżkę do pliku wsdl
 
 3. Dostosuj zapytania w pliku `query.py` do swojej bazy danych
      - nazwy tabel i kolumn
