@@ -23,7 +23,7 @@ Ten skrypt importuje dane systemu adresowego, pobierając je z zewnętrznego ser
     - dane bazy danych i hasło
 
 3. Dostosuj zapytania w pliku `query.py` do swojej bazy danych
-     - nazwy tabel i kolumn
+     - nazwy sekwencji, tabel i kolumn
 
 ## Struktura plików
 
