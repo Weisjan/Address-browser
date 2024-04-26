@@ -1,15 +1,15 @@
 SEKWENCJE = '''
-            CREATE SEQUENCE IF NOT EXISTS panstwo_id_seq_;
-            CREATE SEQUENCE IF NOT EXISTS wojewodztwo_id_seq_;
-            CREATE SEQUENCE IF NOT EXISTS powiat_id_seq_;
-            CREATE SEQUENCE IF NOT EXISTS gmina_id_seq_;
-            CREATE SEQUENCE IF NOT EXISTS miejscowosc_id_seq_;
-            CREATE SEQUENCE IF NOT EXISTS ulica_id_seq_;
-            CREATE SEQUENCE IF NOT EXISTS adres_id_seq_;
+            CREATE SEQUENCE IF NOT EXISTS panstwo_id_seq;
+            CREATE SEQUENCE IF NOT EXISTS wojewodztwo_id_seq;
+            CREATE SEQUENCE IF NOT EXISTS powiat_id_seq;
+            CREATE SEQUENCE IF NOT EXISTS gmina_id_seq;
+            CREATE SEQUENCE IF NOT EXISTS miejscowosc_id_seq;
+            CREATE SEQUENCE IF NOT EXISTS ulica_id_seq;
+            CREATE SEQUENCE IF NOT EXISTS adres_id_seq;
             '''
 
 TWORZENIE_PANSTWA = '''
-            CREATE TABLE IF NOT EXISTS public.panstwo_ (
+            CREATE TABLE IF NOT EXISTS public.panstwo (
             id_panstwa serial,
             nazwa text,
             CONSTRAINT id_panstwa__pk PRIMARY KEY (id_panstwa),
@@ -17,7 +17,7 @@ TWORZENIE_PANSTWA = '''
             '''
 
 TWORZENIE_WOJEWODZTWA = '''
-            CREATE TABLE IF NOT EXISTS public.wojewodztwo_ (
+            CREATE TABLE IF NOT EXISTS public.wojewodztwo (
             id_wojewodztwa serial,
             nazwa text,
             teryt text,
@@ -32,7 +32,7 @@ TWORZENIE_WOJEWODZTWA = '''
             '''
 
 TWORZENIE_POWIATU = '''
-            CREATE TABLE IF NOT EXISTS public.powiat_ (
+            CREATE TABLE IF NOT EXISTS public.powiat (
             id_powiatu serial,
             nazwa text,
             teryt text,
@@ -47,7 +47,7 @@ TWORZENIE_POWIATU = '''
             '''
 
 TWORZENIE_GMINY = '''
-            CREATE TABLE IF NOT EXISTS public.gmina_ (
+            CREATE TABLE IF NOT EXISTS public.gmina (
             id_gminy serial,
             nazwa text,
             teryt text,
@@ -62,7 +62,7 @@ TWORZENIE_GMINY = '''
             '''
 
 TWORZENIE_MIEJSCOWOSCI = '''
-            CREATE TABLE IF NOT EXISTS public.miejscowosc_ (
+            CREATE TABLE IF NOT EXISTS public.miejscowosc (
             id_miejscowosci serial,
             nazwa text,
             rodzaj text,
@@ -79,7 +79,7 @@ TWORZENIE_MIEJSCOWOSCI = '''
             '''
 
 TWORZENIE_ULICY = '''
-            CREATE TABLE IF NOT EXISTS public.ulica_ (
+            CREATE TABLE IF NOT EXISTS public.ulica (
             id_ulicy serial,
             nazwa text,
             nazwa_czesc text,
@@ -99,7 +99,7 @@ TWORZENIE_ULICY = '''
             '''
 
 TWORZENIE_ADRESU = '''
-            CREATE TABLE IF NOT EXISTS public.adres_ (
+            CREATE TABLE IF NOT EXISTS public.adres (
             id_adresu serial,
             kod_pocztowy text,
             numer text,
