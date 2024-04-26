@@ -5,7 +5,7 @@ Ten skrypt importuje dane systemu adresowego, pobierając je z zewnętrznego ser
 ### Wymagania
 
 * Python 3.10
-* Zeep 4.2.1
+* zeep 4.2.1
 * psycopg2
 * configparser
 * requests
