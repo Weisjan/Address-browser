@@ -1,6 +1,6 @@
 # Import adresów
 
-Ten skrypt importuje dane systemu adresowego, pobierając je z zewnętrznego serwisu SOAP i przechowując je w bazie danych PostgreSQL.
+Ten skrypt importuje dane systemu adresowego, pobierając je z zewnętrznego serwisu SOAP i umieszczając w bazie danych PostgreSQL.
 
 ### Wymagania
 
