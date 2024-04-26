@@ -50,11 +50,12 @@ Import-adresow
 
 Skrypt adresy.py służy do pobierania danych z serwera i przechowania ich w bazie danych 
 
-1. Pobranie danych konfiguracyjnych: Wczytuje konfigurację z pliku config.ini, który zawiera informacje o połączeniu z bazą danych oraz adres WSDL usługi SOAP.
-2. Połączenie z bazą danych: Nawiązuje połączenie z bazą danych PostgreSQL, wykorzystując dane z pliku konfiguracyjnego.
-3. Pobranie danych z usługi SOAP: Korzystając z biblioteki Zeep, skrypt pobiera listę województw.
-4. Import danych do bazy danych: Importuje województwa, powiaty, gminy, miejscowości, ulice i adresy do bazy danych PostgreSQL. W przypadku błędów integrowalności danych, obsługiwane są transakcje.
-5. Zapis do pliku JSON: Zapisuje strukturę danych do pliku output.json.
+1. Tworzenie sekwencji oraz tabel: państwo, województwo, powiat, gmina, miejscowość, ulica i adres
+2. Pobranie danych konfiguracyjnych: Wczytuje konfigurację z pliku config.ini, który zawiera informacje o połączeniu z bazą danych oraz adres WSDL usługi SOAP.
+3. Połączenie z bazą danych: Nawiązuje połączenie z bazą danych PostgreSQL, wykorzystując dane z pliku konfiguracyjnego.
+4. Pobranie danych z usługi SOAP: Korzystając z biblioteki Zeep, skrypt pobiera listę województw.
+5. Import danych do bazy danych: Importuje województwa, powiaty, gminy, miejscowości, ulice i adresy do bazy danych PostgreSQL. W przypadku błędów integrowalności danych, obsługiwane są transakcje.
+6. Zapis do pliku JSON: Zapisuje strukturę danych do pliku output.json.
 
 ### Uwagi
 
