@@ -16,7 +16,7 @@ Ten skrypt importuje dane systemu adresowego, pobierając je z zewnętrznego ser
 1. Sklonuj repozytorium:
 
     ```
-    git clone https://github.com/twoje/repozytorium.git](https://github.com/Weisjan/Import-adresow.git
+    git clone https://github.com/Weisjan/Import-adresow.git
     ```
 
 2. Uzupełnij plik `config.ini`
