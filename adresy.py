@@ -6,6 +6,9 @@ import psycopg2
 from psycopg2 import IntegrityError
 import requests
 import configparser
+import sql.query as qr
+
+#TODO pobieranie zapytań sql z pliku
 
 # Odczytywanie danych konfiguracyjnych z pliku config.ini
 def read_config(filename='config.ini'):
@@ -52,14 +55,7 @@ def main():
 
     try:
         cursor.execute("BEGIN")
-        cursor.execute(
-            """
-            INSERT INTO public.panstwo (id_panstwa, nazwa)
-            VALUES (nextval('panstwo_id_seq'), %s) 
-            """,
-            (polska,)
-        )
-
+        cursor.execute(qr.PANSTWO, (polska,))
         cursor.execute("COMMIT")
 
     except IntegrityError as e:
@@ -83,15 +79,9 @@ def main():
 
             try:
                 cursor.execute("BEGIN")
-                cursor.execute('''SELECT id_panstwa from public.panstwo where nazwa = %s ''', (polska,))
+                cursor.execute(qr.ID_PANSTWA, (polska,))
                 id_panstwa = cursor.fetchone()
-                cursor.execute(
-                    """
-                    INSERT INTO public.wojewodztwo (id_wojewodztwa, nazwa, teryt, id_panstwa)
-                    VALUES (nextval('wojewodztwo_id_seq'), %s, %s, %s)
-                    """,
-                    (nowe_wojewodztwo['nazwa'], nowe_wojewodztwo['teryt'], id_panstwa)
-                )
+                cursor.execute(qr.WOJEWODZTWO, (nowe_wojewodztwo['nazwa'], nowe_wojewodztwo['teryt'], id_panstwa))
                 cursor.execute("COMMIT")
 
             except IntegrityError as e:
@@ -126,15 +116,9 @@ def main():
 
                     try:
                         cursor.execute("BEGIN")
-                        cursor.execute('''SELECT id_wojewodztwa from public.wojewodztwo where teryt = %s ''', (teryt_woj,))
+                        cursor.execute(qr.ID_WOJEWODZTWA, (teryt_woj,))
                         id_wojewodztwa = cursor.fetchone()
-                        cursor.execute(
-                            """
-                            INSERT INTO public.powiat (id_powiatu, nazwa, teryt, id_wojewodztwa)
-                            VALUES (nextval('powiat_id_seq'), %s, %s, %s)
-                            """,
-                            (nowy_powiat['nazwa'], nowy_powiat['teryt'], id_wojewodztwa)
-                        )
+                        cursor.execute(qr.POWIAT, (nowy_powiat['nazwa'], nowy_powiat['teryt'], id_wojewodztwa))
                         cursor.execute("COMMIT")
 
                     except IntegrityError as e:
@@ -169,15 +153,9 @@ def main():
 
                             try:
                                 cursor.execute("BEGIN")
-                                cursor.execute('''SELECT id_powiatu from public.powiat where teryt = %s ''', (teryt_pow,))
+                                cursor.execute(qr.ID_POWIATU, (teryt_pow,))
                                 id_powiatu = cursor.fetchone()
-                                cursor.execute(
-                                    """
-                                    INSERT INTO public.gmina (id_gminy, nazwa, teryt, id_powiatu)
-                                    VALUES (nextval('gmina_id_seq'), %s, %s, %s)
-                                    """,
-                                    (nowa_gmina['nazwa'], nowa_gmina['teryt'], id_powiatu)
-                                )
+                                cursor.execute(qr.GMINA, (nowa_gmina['nazwa'], nowa_gmina['teryt'], id_powiatu))
                                 cursor.execute("COMMIT")
 
                             except IntegrityError as e:
@@ -216,15 +194,9 @@ def main():
 
                                     try:
                                         cursor.execute("BEGIN")
-                                        cursor.execute('''SELECT id_gminy from public.gmina where teryt = %s ''', (teryt_gm,))
+                                        cursor.execute(qr.ID_GMINY, (teryt_gm,))
                                         id_gminy = cursor.fetchone()
-                                        cursor.execute(
-                                            """
-                                            INSERT INTO public.miejscowosc (id_miejscowosci, nazwa, rodzaj, teryt, miejsciipid, id_gminy)
-                                            VALUES (nextval('miejscowosc_id_seq'), %s, %s, %s, %s, %s)
-                                            """,
-                                            (nowa_miejscowosc['nazwa'], nowa_miejscowosc['rodzaj'], nowa_miejscowosc['teryt'], nowa_miejscowosc['miejsciipid'], id_gminy)
-                                        )
+                                        cursor.execute(qr.MIEJSCOWOSC, (nowa_miejscowosc['nazwa'], nowa_miejscowosc['rodzaj'], nowa_miejscowosc['teryt'], nowa_miejscowosc['miejsciipid'], id_gminy))
                                         cursor.execute("COMMIT")
 
                                     except IntegrityError as e:
@@ -273,15 +245,9 @@ def main():
 
                                             try:
                                                 cursor.execute("BEGIN")
-                                                cursor.execute('''SELECT id_miejscowosci from public.miejscowosc where miejsciipid = %s ''', (id_miejsc,))
+                                                cursor.execute(qr.ID_MIEJSCOWOSCI, (id_miejsc,))
                                                 id_miejscowosci = cursor.fetchone()
-                                                cursor.execute(
-                                                    """
-                                                    INSERT INTO public.adres (id_adresu, kod_pocztowy, numer, status, lat, lon, pktprgiipid, id_miejscowosci)
-                                                    VALUES (nextval('adres_id_seq'), %s, %s, %s, %s, %s, %s, %s)
-                                                    """,
-                                                    (nowy_adres['kod_pocztowy'], nowy_adres['numer'], nowy_adres['status'], nowy_adres['lat'], nowy_adres['lon'], nowy_adres['pktprgiipid'], id_miejscowosci)
-                                                )
+                                                cursor.execute(qr.ADRES_MIEJSCOWOSC, (nowy_adres['kod_pocztowy'], nowy_adres['numer'], nowy_adres['status'], nowy_adres['lat'], nowy_adres['lon'], nowy_adres['pktprgiipid'], id_miejscowosci))
                                                 cursor.execute("COMMIT")
 
                                             except IntegrityError as e:
@@ -314,15 +280,9 @@ def main():
 
                                             try:
                                                 cursor.execute("BEGIN")
-                                                cursor.execute('''SELECT id_miejscowosci from public.miejscowosc where miejsciipid = %s ''', (id_miejsc,))
+                                                cursor.execute(qr.ID_MIEJSCOWOSCI, (id_miejsc,))
                                                 id_miejscowosci = cursor.fetchone()
-                                                cursor.execute(
-                                                    """
-                                                    INSERT INTO public.ulica (id_ulicy, nazwa, nazwa_czesc, nazwa_przed1, nazwa_przed2, typ, teryt, uliipid, id_miejscowosci)
-                                                    VALUES (nextval('ulica_id_seq'), %s, %s, %s, %s, %s, %s, %s, %s)
-                                                    """,
-                                                    (nowa_ulica['nazwa'], nowa_ulica['nazwa_czesc'], nowa_ulica['nazwa_przed1'], nowa_ulica['nazwa_przed2'], nowa_ulica['typ'], nowa_ulica['teryt'], nowa_ulica['uliipid'], id_miejscowosci)
-                                                )
+                                                cursor.execute(qr.ULICA, (nowa_ulica['nazwa'], nowa_ulica['nazwa_czesc'], nowa_ulica['nazwa_przed1'], nowa_ulica['nazwa_przed2'], nowa_ulica['typ'], nowa_ulica['teryt'], nowa_ulica['uliipid'], id_miejscowosci))
                                                 cursor.execute("COMMIT")
 
                                             except IntegrityError as e:
@@ -361,15 +321,9 @@ def main():
 
                                                         try:
                                                             cursor.execute("BEGIN")
-                                                            cursor.execute('''SELECT id_ulicy from public.ulica where uliipid = %s ''', (id_ul,))
+                                                            cursor.execute(qr.ID_ULICY, (id_ul,))
                                                             id_ulicy = cursor.fetchone()
-                                                            cursor.execute(
-                                                                """
-                                                                INSERT INTO public.adres (id_adresu, kod_pocztowy, numer, status, lat, lon, pktprgiipid, id_ulicy)
-                                                                VALUES (nextval('adres_id_seq'), %s, %s, %s, %s, %s, %s, %s)
-                                                                """,
-                                                                (nowy_adres_ul['kod_pocztowy'], nowy_adres_ul['numer'], nowy_adres_ul['status'], nowy_adres_ul['lat'], nowy_adres_ul['lon'], nowy_adres_ul['pktprgiipid'], id_ulicy)
-                                                            )
+                                                            cursor.execute(qr.ADRES_ULICA, (nowy_adres_ul['kod_pocztowy'], nowy_adres_ul['numer'], nowy_adres_ul['status'], nowy_adres_ul['lat'], nowy_adres_ul['lon'], nowy_adres_ul['pktprgiipid'], id_ulicy))
                                                             cursor.execute("COMMIT")
 
                                                         except IntegrityError as e:
