@@ -9,6 +9,13 @@ import configparser
 import sql.query as qr
 
 
+#tworzenie tabel
+def stworz_tabele(cursor):
+    queries = [qr.SEKWENCJE, qr.TWORZENIE_PANSTWA, qr.TWORZENIE_WOJEWODZTWA, qr.TWORZENIE_POWIATU, qr.TWORZENIE_GMINY, qr.TWORZENIE_MIEJSCOWOSCI, qr.TWORZENIE_ULICY, qr.TWORZENIE_ADRESU]
+
+    for query in queries:
+        cursor.execute(query)
+
 # Odczytywanie danych konfiguracyjnych z pliku config.ini
 def read_config(filename='config/config.ini'):
     config = configparser.ConfigParser()
@@ -30,6 +37,7 @@ def main():
     )
 
     cursor = conn.cursor()
+    stworz_tabele(cursor)
 
     # Pobranie adresu WSDL z pliku konfiguracyjnego
     wsdl = config['wsdl']
