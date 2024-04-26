@@ -41,7 +41,7 @@ Import-adresow
 
 | No | File Name | Details 
 |----|------------|-------|
-| 1  | config.ini | Należy zmodyfikować sekcje default
+| 1  | config.ini | Należy zmodyfikować sekcję default
 | 2 | query.py | W tym pliku należy dostosować zapytania SQL do projektu
 | 3  | adresy.py | Realizuje import danych
 | 4 | output.json | Plik wyjściowy zawierający strukturę danych w formacie JSON
