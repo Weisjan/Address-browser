@@ -8,10 +8,9 @@ import requests
 import configparser
 import sql.query as qr
 
-#TODO pobieranie zapytań sql z pliku
 
 # Odczytywanie danych konfiguracyjnych z pliku config.ini
-def read_config(filename='config.ini'):
+def read_config(filename='config/config.ini'):
     config = configparser.ConfigParser()
     config.read(filename)
     return config['DEFAULT']
