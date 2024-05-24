@@ -1,4 +1,4 @@
-# Import adresów
+# Import addresses
 
 Ten skrypt importuje dane systemu adresowego, pobierając je z zewnętrznego serwisu SOAP i umieszczając w bazie danych PostgreSQL.
 
