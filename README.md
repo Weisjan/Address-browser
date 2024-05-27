@@ -2,7 +2,7 @@
 
 Ten skrypt importuje dane systemu adresowego, pobierając je z zewnętrznego serwisu SOAP i umieszczając w bazie danych PostgreSQL.
 
-### Wymagania
+## Wymagania
 
 * Python 3.10
 * zeep 4.2.1
@@ -11,7 +11,7 @@ Ten skrypt importuje dane systemu adresowego, pobierając je z zewnętrznego ser
 * requests
 * json
 
-### Instalacja
+## Instalacja
 
 1. Sklonuj repozytorium:
 
@@ -46,7 +46,7 @@ Import-adresow
 | 4 | output.json | Plik wyjściowy zawierający strukturę danych w formacie JSON
 | 5 | Readme.md | Plik Readme
   
-### Opis działania
+## Opis działania
 
 Skrypt adresy.py służy do pobierania danych z serwera i przechowania ich w bazie danych 
 
@@ -57,13 +57,13 @@ Skrypt adresy.py służy do pobierania danych z serwera i przechowania ich w baz
 5. Import danych do bazy danych: Importuje województwa, powiaty, gminy, miejscowości, ulice i adresy do bazy danych PostgreSQL. W przypadku błędów integrowalności danych, obsługiwane są transakcje.
 6. Zapis do pliku JSON: Zapisuje strukturę danych do pliku output.json.
 
-### Uwagi
+## Uwagi
 
 - W przypadku błędów połączenia podczas pobierania danych, skrypt powtórzy operację.
 - Obsługa błędów jest implementowana dla błędów integralności bazy danych.
 - Wyniki są zapisywane w pliku JSON dla referencji.
 
-### Autor
+## Autor
 
 [Jan Weis](https://github.com/Weisjan)
 
