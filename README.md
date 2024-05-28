@@ -48,8 +48,6 @@ Import-adresow
   
 ## Opis działania
 
-Skrypt adresy.py służy do pobierania danych z serwera i przechowania ich w bazie danych 
-
 1. Tworzenie sekwencji oraz tabel: państwo, województwo, powiat, gmina, miejscowość, ulica i adres
 2. Pobranie danych konfiguracyjnych: Wczytuje konfigurację z pliku config.ini, który zawiera informacje o połączeniu z bazą danych oraz adres WSDL usługi SOAP.
 3. Połączenie z bazą danych: Nawiązuje połączenie z bazą danych PostgreSQL, wykorzystując dane z pliku konfiguracyjnego.
