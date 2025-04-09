@@ -25,7 +25,7 @@ TWORZENIE_WOJEWODZTWA = '''
             CONSTRAINT id_wojewodztwa__pk PRIMARY KEY (id_wojewodztwa),
             CONSTRAINT woj__teryt_uni UNIQUE (teryt),
             CONSTRAINT id_panstwa__fk FOREIGN KEY (id_panstwa)
-            REFERENCES public.panstwo_ (id_panstwa) MATCH SIMPLE
+            REFERENCES public.panstwo (id_panstwa) MATCH SIMPLE
             ON UPDATE NO ACTION
             ON DELETE NO ACTION
             NOT VALID);
@@ -40,7 +40,7 @@ TWORZENIE_POWIATU = '''
             CONSTRAINT id_powiatu__pk PRIMARY KEY (id_powiatu),
             CONSTRAINT pow__teryt_uni UNIQUE (teryt),
             CONSTRAINT id_wojewodztwa__fk FOREIGN KEY (id_wojewodztwa)
-            REFERENCES public.wojewodztwo_ (id_wojewodztwa) MATCH SIMPLE
+            REFERENCES public.wojewodztwo (id_wojewodztwa) MATCH SIMPLE
             ON UPDATE NO ACTION
             ON DELETE NO ACTION
             NOT VALID);
@@ -55,7 +55,7 @@ TWORZENIE_GMINY = '''
             CONSTRAINT id_gminy__pk PRIMARY KEY (id_gminy),
             CONSTRAINT gm__teryt_uni UNIQUE (teryt),
             CONSTRAINT id_powiatu__fk FOREIGN KEY (id_powiatu)
-            REFERENCES public.powiat_ (id_powiatu) MATCH SIMPLE
+            REFERENCES public.powiat (id_powiatu) MATCH SIMPLE
             ON UPDATE NO ACTION
             ON DELETE NO ACTION
             NOT VALID);
@@ -72,7 +72,7 @@ TWORZENIE_MIEJSCOWOSCI = '''
             CONSTRAINT id_miejscowosci__pk PRIMARY KEY (id_miejscowosci),
             CONSTRAINT miejsc__miejsciipid_uni UNIQUE (miejsciipid),
             CONSTRAINT id_gminy__fk FOREIGN KEY (id_gminy)
-            REFERENCES public.gmina_ (id_gminy) MATCH SIMPLE
+            REFERENCES public.gmina (id_gminy) MATCH SIMPLE
             ON UPDATE NO ACTION
             ON DELETE NO ACTION
             NOT VALID);
@@ -92,7 +92,7 @@ TWORZENIE_ULICY = '''
             CONSTRAINT id_ulicy__pk PRIMARY KEY (id_ulicy),
             CONSTRAINT ul__uliipid UNIQUE (uliipid),
             CONSTRAINT id_miejscowosci__fk FOREIGN KEY (id_miejscowosci)
-            REFERENCES public.miejscowosc_ (id_miejscowosci) MATCH SIMPLE
+            REFERENCES public.miejscowosc (id_miejscowosci) MATCH SIMPLE
             ON UPDATE NO ACTION
             ON DELETE NO ACTION
             NOT VALID);
@@ -112,12 +112,12 @@ TWORZENIE_ADRESU = '''
             CONSTRAINT id_adresu__pk PRIMARY KEY (id_adresu),
             CONSTRAINT adr__pktprgiipid UNIQUE (pktprgiipid),
             CONSTRAINT id_ulicy__fk FOREIGN KEY (id_ulicy)
-            REFERENCES public.ulica_ (id_ulicy) MATCH SIMPLE
+            REFERENCES public.ulica (id_ulicy) MATCH SIMPLE
             ON UPDATE NO ACTION
             ON DELETE NO ACTION
             NOT VALID,
             CONSTRAINT id_miejscowosci__fk FOREIGN KEY (id_miejscowosci)
-            REFERENCES public.miejscowosc_ (id_miejscowosci) MATCH SIMPLE
+            REFERENCES public.miejscowosc (id_miejscowosci) MATCH SIMPLE
             ON UPDATE NO ACTION
             ON DELETE NO ACTION
             NOT VALID);
