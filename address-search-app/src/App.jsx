@@ -6,11 +6,11 @@ export default function App() {
   const [results, setResults] = useState([]);
   const [resultType, setResultType] = useState("");
 
-  const handleSearch = async (query) => {
+  const handleSearch = async (query, type) => {
     if (query.length < 2) return;
 
     const res = await fetch(
-      `http://localhost:8000/szukaj?q=${encodeURIComponent(query)}`
+      `http://localhost:8000/szukaj?q=${encodeURIComponent(query)}&typ=${type}`
     );
     const data = await res.json();
 

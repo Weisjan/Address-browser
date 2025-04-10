@@ -17,9 +17,9 @@ def stworz_tabele(cursor):
         cursor.execute(query)
 
 # Odczytywanie danych konfiguracyjnych z pliku config.ini
-def read_config(filename='Backend/config/config.ini'):
+def read_config():
     config = configparser.ConfigParser()
-    config.read(filename)
+    config.read('Backend/config/config.ini')
     return config['DEFAULT']
 
 
@@ -58,11 +58,9 @@ def main():
         'nazwa': []
     }
 
-    polska = 'polska'
-
     try:
         cursor.execute("BEGIN")
-        cursor.execute(qr.PANSTWO, (polska,))
+        cursor.execute(qr.PANSTWO, ('Polska',))
         cursor.execute("COMMIT")
 
     except IntegrityError as e:
@@ -86,7 +84,7 @@ def main():
 
             try:
                 cursor.execute("BEGIN")
-                cursor.execute(qr.ID_PANSTWA, (polska,))
+                cursor.execute(qr.ID_PANSTWA, ('polska',))
                 id_panstwa = cursor.fetchone()
                 cursor.execute(qr.WOJEWODZTWO, (nowe_wojewodztwo['nazwa'], nowe_wojewodztwo['teryt'], id_panstwa))
                 cursor.execute("COMMIT")

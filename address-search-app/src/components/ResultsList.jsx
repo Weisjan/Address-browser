@@ -4,21 +4,39 @@ export default function ResultsList({ results, type }) {
   }
 
   return (
-    <div>
-      <h3>Wyniki ({type})</h3>
+    <div id="results">
+      <h3>Wyniki: {type}</h3>
       <ul>
         {results.map((item, idx) => (
-          <li key={idx}>
+          <li key={idx} className="result-item">
+            {type === "powiat" && (
+              <>
+                <strong>Powiat:</strong> {item.powiat} <br />
+                <strong>Województwo:</strong> {item.wojewodztwo}
+              </>
+            )}
+            {type === "gmina" && (
+              <>
+                <strong>Gmina:</strong> {item.gmina} <br />
+                <strong>Powiat:</strong> {item.powiat} <br />
+                <strong>Województwo:</strong> {item.wojewodztwo}
+              </>
+            )}
             {type === "miejscowość" && (
               <>
-                {item.miejscowosc}, gmina {item.gmina}, powiat {item.powiat},
-                woj. {item.wojewodztwo}
+                <strong>Miejscowość:</strong> {item.miejscowosc} <br />
+                <strong>Gmina:</strong> {item.gmina} <br />
+                <strong>Powiat:</strong> {item.powiat} <br />
+                <strong>Województwo:</strong> {item.wojewodztwo}
               </>
             )}
             {type === "ulica" && (
               <>
-                ul. {item.ulica}, {item.miejscowosc}, gmina {item.gmina}, powiat{" "}
-                {item.powiat}, woj. {item.wojewodztwo}
+                <strong>Ulica:</strong> {item.ulica} <br />
+                <strong>Miejscowość:</strong> {item.miejscowosc} <br />
+                <strong>Gmina:</strong> {item.gmina} <br />
+                <strong>Powiat:</strong> {item.powiat} <br />
+                <strong>Województwo:</strong> {item.wojewodztwo}
               </>
             )}
           </li>
