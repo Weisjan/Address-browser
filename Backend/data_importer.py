@@ -17,7 +17,7 @@ def stworz_tabele(cursor):
         cursor.execute(query)
 
 # Odczytywanie danych konfiguracyjnych z pliku config.ini
-def read_config(filename='config/config.ini'):
+def read_config(filename='Backend/config/config.ini'):
     config = configparser.ConfigParser()
     config.read(filename)
     return config['DEFAULT']
@@ -341,7 +341,7 @@ def main():
                                                 continue
 
     # Zapis do pliku JSON
-    with open('output.json', 'w') as json_file:
+    with open('Backend/output.json', 'w') as json_file:
         json.dump(panstwo, json_file, indent=4)
 
     cursor.close()
