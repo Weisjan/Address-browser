@@ -20,7 +20,7 @@ export default function App() {
 
   return (
     <div className="container">
-      <h1>🔍 Wyszukiwarka Adresów</h1>
+      <h1>Wyszukiwarka Adresów</h1>
       <SearchBar onSearch={handleSearch} />
       <ResultsList results={results} type={resultType} />
     </div>
