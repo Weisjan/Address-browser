@@ -29,5 +29,5 @@ __pycache__/
 
 .DS_Store
 
-config/config.ini
+config.ini
 .env
