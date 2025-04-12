@@ -31,3 +31,4 @@ __pycache__/
 
 config.ini
 .env
+Backend/config/config.ini
