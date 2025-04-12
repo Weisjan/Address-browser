@@ -52,7 +52,7 @@ Frontend (React):
 
 5. Frontend (React)
    ```
-   cd frontend
+   cd address-search-app
    npm install
    npm run dev
    ```
