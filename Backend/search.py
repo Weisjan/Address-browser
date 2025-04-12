@@ -6,16 +6,16 @@ from Backend.sql import query as qr
 
 app = FastAPI(title="Address API", version="1.0")
 
-# CORS: pozwalamy frontendowi z Reacta się połączyć
+# Połączenie z Frontendem
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Możesz to zawęzić do konkretnych domen
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Odczyt konfiguracji
+# Odczytywanie danych konfiguracyjnych z pliku config.ini
 def read_config():
     config = configparser.ConfigParser()
     config.read("Backend/config/config.ini")
@@ -30,11 +30,11 @@ conn = psycopg2.connect(
     user=config["user"],
     password=config["password"]
 )
-
+#Endpoint do przeszukiwania adresów 
 @app.get("/szukaj")
 def search(
     q: str = Query(..., min_length=2),
-    typ: str = Query(..., regex="^(ulica|miejscowosc|gmina|powiat)$")
+    typ: str = Query(..., regex="^(ulica|miejscowość|gmina|powiat)$")
 ):
     q = q.lower()
     with conn.cursor() as cur:
@@ -59,13 +59,13 @@ def search(
                 ]
             }
 
-        elif typ == "miejscowosc":
+        elif typ == "miejscowość":
             cur.execute(qr.SZUKAJ_MIEJSCOWOSCI, (f"%{q}%",))
             wyniki = cur.fetchall()
             return {
                 "typ": "miejscowość",
                 "wyniki": [
-                    {"miejscowosc": r[0], "gmina": r[1], "powiat": r[2], "wojewodztwo": r[3]} for r in wyniki
+                    {"miejscowość": r[0], "gmina": r[1], "powiat": r[2], "wojewodztwo": r[3]} for r in wyniki
                 ]
             }
 
@@ -75,7 +75,7 @@ def search(
             return {
                 "typ": "ulica",
                 "wyniki": [
-                    {"ulica": r[0], "miejscowosc": r[1], "gmina": r[2], "powiat": r[3], "wojewodztwo": r[4]} for r in wyniki
+                    {"ulica": r[0], "miejscowość": r[1], "gmina": r[2], "powiat": r[3], "wojewodztwo": r[4]} for r in wyniki
                 ]
             }
 

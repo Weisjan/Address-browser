@@ -24,7 +24,7 @@ export default function ResultsList({ results, type }) {
             )}
             {type === "miejscowość" && (
               <>
-                <strong>Miejscowość:</strong> {item.miejscowosc} <br />
+                <strong>Miejscowość:</strong> {item.miejscowość} <br />
                 <strong>Gmina:</strong> {item.gmina} <br />
                 <strong>Powiat:</strong> {item.powiat} <br />
                 <strong>Województwo:</strong> {item.wojewodztwo}
@@ -33,7 +33,7 @@ export default function ResultsList({ results, type }) {
             {type === "ulica" && (
               <>
                 <strong>Ulica:</strong> {item.ulica} <br />
-                <strong>Miejscowość:</strong> {item.miejscowosc} <br />
+                <strong>Miejscowość:</strong> {item.miejscowość} <br />
                 <strong>Gmina:</strong> {item.gmina} <br />
                 <strong>Powiat:</strong> {item.powiat} <br />
                 <strong>Województwo:</strong> {item.wojewodztwo}

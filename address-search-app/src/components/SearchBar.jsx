@@ -12,18 +12,18 @@ export default function SearchBar({ onSearch }) {
   return (
     <form onSubmit={handleSubmit}>
       <input
-        class="search-input"
+        className="search-input"
         type="text"
         placeholder="Wpisz zapytanie..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      <div class="radio-group">
-        {["ulica", "miejscowosc", "gmina", "powiat"].map((value) => (
+      <div className="radio-group">
+        {["ulica", "miejscowość", "gmina", "powiat"].map((value) => (
           <label
             key={value}
-            class={`radio-option ${type === value ? "active" : ""}`}
+            className={`radio-option ${type === value ? "active" : ""}`}
           >
             <input
               type="radio"
