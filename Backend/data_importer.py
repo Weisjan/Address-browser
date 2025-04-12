@@ -338,9 +338,9 @@ def main():
                                             else:
                                                 continue
 
-    # Zapis do pliku JSON
-    with open('Backend/output.json', 'w') as json_file:
-        json.dump(panstwo, json_file, indent=4)
+    # Opcjonalny zapis do pliku JSON
+    # with open('Backend/output.json', 'w') as json_file:
+    #     json.dump(panstwo, json_file, indent=4)
 
     cursor.close()
     conn.close()
