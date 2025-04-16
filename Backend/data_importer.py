@@ -4,19 +4,46 @@ import psycopg2
 from psycopg2 import IntegrityError
 import requests
 import configparser
-import sql.query as qr
+from sql.sequences import CREATE_SEQUENCES
+from sql.tables import (
+    CREATE_TABLE_COUNTRY,
+    CREATE_TABLE_VOIVODESHIP,
+    CREATE_TABLE_COUNTY,
+    CREATE_TABLE_COMMUNE,
+    CREATE_TABLE_LOCALITY,
+    CREATE_TABLE_STREET,
+    CREATE_TABLE_ADDRESS
+)
+from sql.insert import (
+    INSERT_COUNTRY,
+    INSERT_VOIVODESHIP,
+    INSERT_COUNTY,
+    INSERT_COMMUNE,
+    INSERT_LOCALITY,
+    INSERT_STREET,
+    INSERT_ADDRESS_BY_LOCALITY,
+    INSERT_ADDRESS_BY_STREET
+)
+from sql.select_ID import (
+    SELECT_COUNTRY_ID,
+    SELECT_VOIVODESHIP_ID,
+    SELECT_COUNTY_ID,
+    SELECT_COMMUNE_ID,
+    SELECT_LOCALITY_ID,
+    SELECT_STREET_ID
+)
 
 
 def create_tables(cursor):
     queries = [
-        qr.SEKWENCJE, 
-        qr.TWORZENIE_PANSTWA, 
-        qr.TWORZENIE_WOJEWODZTWA, 
-        qr.TWORZENIE_POWIATU, 
-        qr.TWORZENIE_GMINY, 
-        qr.TWORZENIE_MIEJSCOWOSCI, 
-        qr.TWORZENIE_ULICY, 
-        qr.TWORZENIE_ADRESU
+        CREATE_SEQUENCES, 
+        CREATE_TABLE_COUNTRY, 
+        CREATE_TABLE_VOIVODESHIP, 
+        CREATE_TABLE_COUNTY, 
+        CREATE_TABLE_COMMUNE, 
+        CREATE_TABLE_LOCALITY, 
+        CREATE_TABLE_STREET, 
+        CREATE_TABLE_ADDRESS
     ]
 
     for query in queries:
@@ -41,7 +68,7 @@ def create_connection(config):
 def initialize_country(cursor):
     try:
         cursor.execute("BEGIN")
-        cursor.execute(qr.PANSTWO, ('Polska',))
+        cursor.execute(INSERT_COUNTRY, ('Polska',))
         cursor.execute("COMMIT")
     except IntegrityError as e:
         cursor.execute("ROLLBACK")
@@ -87,9 +114,9 @@ def process_voivodeship(cursor, client, woj):
     }
     
     def insert_voivodeship(cursor, nazwa, teryt):
-        cursor.execute(qr.ID_PANSTWA, ('polska',))
+        cursor.execute(SELECT_COUNTRY_ID, ('polska',))
         id_panstwa = cursor.fetchone()
-        cursor.execute(qr.WOJEWODZTWO, (nazwa, teryt, id_panstwa))
+        cursor.execute(INSERT_VOIVODESHIP, (nazwa, teryt, id_panstwa))
     
     safe_db_operation(cursor, insert_voivodeship, nazwa_woj, teryt_woj)
     
@@ -116,9 +143,9 @@ def process_county(cursor, client, pow, teryt_woj, nowe_wojewodztwo):
     nowe_wojewodztwo['powiaty'].append(nowy_powiat)
     
     def insert_county(cursor, nazwa, teryt):
-        cursor.execute(qr.ID_WOJEWODZTWA, (teryt_woj,))
+        cursor.execute(SELECT_VOIVODESHIP_ID, (teryt_woj,))
         id_wojewodztwa = cursor.fetchone()
-        cursor.execute(qr.POWIAT, (nazwa, teryt, id_wojewodztwa))
+        cursor.execute(INSERT_COUNTY, (nazwa, teryt, id_wojewodztwa))
     
     safe_db_operation(cursor, insert_county, nazwa_pow, teryt_pow)
     
@@ -143,9 +170,9 @@ def process_commune(cursor, client, gm, teryt_pow, nowy_powiat):
     nowy_powiat['gminy'].append(nowa_gmina)
     
     def insert_commune(cursor, nazwa, teryt):
-        cursor.execute(qr.ID_POWIATU, (teryt_pow,))
+        cursor.execute(SELECT_COUNTY_ID, (teryt_pow,))
         id_powiatu = cursor.fetchone()
-        cursor.execute(qr.GMINA, (nazwa, teryt, id_powiatu))
+        cursor.execute(INSERT_COMMUNE, (nazwa, teryt, id_powiatu))
     
     safe_db_operation(cursor, insert_commune, nazwa_gm, teryt_gm)
     
@@ -174,9 +201,9 @@ def process_locality(cursor, client, miejsc, teryt_gm, nowa_gmina):
     nowa_gmina['miejscowosci'].append(nowa_miejscowosc)
     
     def insert_locality(cursor, nazwa, rodzaj, teryt, miejsciipid):
-        cursor.execute(qr.ID_GMINY, (teryt_gm,))
+        cursor.execute(SELECT_COMMUNE_ID, (teryt_gm,))
         id_gminy = cursor.fetchone()
-        cursor.execute(qr.MIEJSCOWOSC, (nazwa, rodzaj, teryt, miejsciipid, id_gminy))
+        cursor.execute(INSERT_LOCALITY, (nazwa, rodzaj, teryt, miejsciipid, id_gminy))
     
     safe_db_operation(cursor, insert_locality, nazwa_miejsc, rodzaj_miejsc, teryt_miejsc, id_miejsc)
     
@@ -209,9 +236,9 @@ def process_addresses_without_streets(cursor, client, id_miejsc, nowa_miejscowos
             nowa_miejscowosc['adresy'].append(nowy_adres)
             
             def insert_address(cursor, kod, numer, status, lat, lon, pktprgiipid):
-                cursor.execute(qr.ID_MIEJSCOWOSCI, (id_miejsc,))
+                cursor.execute(SELECT_LOCALITY_ID, (id_miejsc,))
                 id_miejscowosci = cursor.fetchone()
-                cursor.execute(qr.ADRES_MIEJSCOWOSC, (kod, numer, status, lat, lon, pktprgiipid, id_miejscowosci))
+                cursor.execute(INSERT_ADDRESS_BY_LOCALITY, (kod, numer, status, lat, lon, pktprgiipid, id_miejscowosci))
             
             safe_db_operation(cursor, insert_address, kod_pocztowy, numer, status, lat, lon, id_adr)
 
@@ -243,9 +270,9 @@ def process_streets(cursor, client, id_miejsc, nowa_miejscowosc):
             nowa_miejscowosc['ulice'].append(nowa_ulica)
             
             def insert_street(cursor, nazwa, nazwa_czesc, nazwa_przed1, nazwa_przed2, typ, teryt, uliipid):
-                cursor.execute(qr.ID_MIEJSCOWOSCI, (id_miejsc,))
+                cursor.execute(SELECT_LOCALITY_ID, (id_miejsc,))
                 id_miejscowosci = cursor.fetchone()
-                cursor.execute(qr.ULICA, (nazwa, nazwa_czesc, nazwa_przed1, nazwa_przed2, typ, teryt, uliipid, id_miejscowosci))
+                cursor.execute(INSERT_STREET, (nazwa, nazwa_czesc, nazwa_przed1, nazwa_przed2, typ, teryt, uliipid, id_miejscowosci))
             
             safe_db_operation(cursor, insert_street, nazwa_ul, nazwa_czesc_ul, nazwa_przed1_ul, nazwa_przed2_ul, typ_ul, teryt_ul, id_ul)
             
@@ -277,9 +304,9 @@ def process_street_addresses(cursor, client, id_ul, nowa_ulica):
             nowa_ulica['adresy'].append(nowy_adres)
             
             def insert_address(cursor, kod, numer, status, lat, lon, pktprgiipid):
-                cursor.execute(qr.ID_ULICY, (id_ul,))
+                cursor.execute(SELECT_STREET_ID, (id_ul,))
                 id_ulicy = cursor.fetchone()
-                cursor.execute(qr.ADRES_ULICA, (kod, numer, status, lat, lon, pktprgiipid, id_ulicy))
+                cursor.execute(INSERT_ADDRESS_BY_STREET, (kod, numer, status, lat, lon, pktprgiipid, id_ulicy))
             
             safe_db_operation(cursor, insert_address, kod_pocztowy, numer, status, lat, lon, id_adr)
 
