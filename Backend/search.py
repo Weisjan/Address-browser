@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 import psycopg2
 import os
 from dotenv import load_dotenv
+from contextlib import contextmanager
 from Backend.sql.queries import (
     SEARCH_COUNTIES,
     SEARCH_COMMUNES,
@@ -12,20 +13,18 @@ from Backend.sql.queries import (
 
 app = FastAPI(title="Address API", version="1.0")
 
-# Read configuration data from .env file
-def read_config():
+def load_config():
     load_dotenv("Backend/.env")
     return {
         "host": os.getenv("DB_HOST"),
         "database": os.getenv("DB_NAME"),
         "user": os.getenv("DB_USER"),
         "password": os.getenv("DB_PASSWORD"),
-        "cors_origins": os.getenv("CORS_ORIGINS")
+        "cors_origins": os.getenv("CORS_ORIGINS", "").split(",")
     }
 
-config = read_config()
+config = load_config()
 
-# Connection with Frontend using CORS configuration from .env
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config["cors_origins"],
@@ -34,61 +33,84 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Database connection
-conn = psycopg2.connect(
-    host=config["host"],
-    database=config["database"],
-    user=config["user"],
-    password=config["password"]
-)
+# Database connection management
+@contextmanager
+def get_db_cursor():
+    conn = psycopg2.connect(
+        host=config["host"],
+        database=config["database"],
+        user=config["user"],
+        password=config["password"]
+    )
+    try:
+        with conn.cursor() as cursor:
+            yield cursor
+    finally:
+        conn.close()
 
-# Endpoint for searching addresses
-@app.get("/szukaj")
-def search(
-    q: str = Query(..., min_length=2),
-    typ: str = Query(..., regex="^(ulica|miejscowość|gmina|powiat)$")
+def get_cursor():
+    with get_db_cursor() as cursor:
+        yield cursor
+
+@app.get("/search/counties")
+def search_counties(
+    query: str = Query(..., min_length=2, description="Search term for counties"),
+    cursor = Depends(get_cursor)
 ):
-    q = q.lower()
-    with conn.cursor() as cur:
+    cursor.execute(SEARCH_COUNTIES, (f"%{query.lower()}%",))
+    results = cursor.fetchall()
+    
+    return {
+        "type": "county",
+        "results": [
+            {"county": r[0], "voivodeship": r[1]} for r in results
+        ]
+    }
 
-        if typ == "powiat":
-            cur.execute(SEARCH_COUNTIES, (f"%{q}%",))
-            wyniki = cur.fetchall()
-            return {
-                "typ": "powiat",
-                "wyniki": [
-                    {"powiat": r[0], "wojewodztwo": r[1]} for r in wyniki
-                ]
-            }
+# Commune endpoint
+@app.get("/search/communes")
+def search_communes(
+    query: str = Query(..., min_length=2, description="Search term for communes"),
+    cursor = Depends(get_cursor)
+):
+    cursor.execute(SEARCH_COMMUNES, (f"%{query.lower()}%",))
+    results = cursor.fetchall()
+    
+    return {
+        "type": "commune",
+        "results": [
+            {"commune": r[0], "county": r[1], "voivodeship": r[2]} for r in results
+        ]
+    }
 
-        elif typ == "gmina":
-            cur.execute(SEARCH_COMMUNES, (f"%{q}%",))
-            wyniki = cur.fetchall()
-            return {
-                "typ": "gmina",
-                "wyniki": [
-                    {"gmina": r[0], "powiat": r[1], "wojewodztwo": r[2]} for r in wyniki
-                ]
-            }
+# Locality endpoint
+@app.get("/search/localities")
+def search_localities(
+    query: str = Query(..., min_length=2, description="Search term for localities"),
+    cursor = Depends(get_cursor)
+):
+    cursor.execute(SEARCH_LOCALITIES, (f"%{query.lower()}%",))
+    results = cursor.fetchall()
+    
+    return {
+        "type": "locality",
+        "results": [
+            {"locality": r[0], "commune": r[1], "county": r[2], "voivodeship": r[3]} for r in results
+        ]
+    }
 
-        elif typ == "miejscowość":
-            cur.execute(SEARCH_LOCALITIES, (f"%{q}%",))
-            wyniki = cur.fetchall()
-            return {
-                "typ": "miejscowość",
-                "wyniki": [
-                    {"miejscowość": r[0], "gmina": r[1], "powiat": r[2], "wojewodztwo": r[3]} for r in wyniki
-                ]
-            }
-
-        elif typ == "ulica":
-            cur.execute(SEARCH_STREETS, (f"%{q}%",))
-            wyniki = cur.fetchall()
-            return {
-                "typ": "ulica",
-                "wyniki": [
-                    {"ulica": r[0], "miejscowość": r[1], "gmina": r[2], "powiat": r[3], "wojewodztwo": r[4]} for r in wyniki
-                ]
-            }
-
-    return {"typ": "brak wyników"}
+# Street endpoint
+@app.get("/search/streets")
+def search_streets(
+    query: str = Query(..., min_length=2, description="Search term for streets"),
+    cursor = Depends(get_cursor)
+):
+    cursor.execute(SEARCH_STREETS, (f"%{query.lower()}%",))
+    results = cursor.fetchall()
+    
+    return {
+        "type": "street",
+        "results": [
+            {"street": r[0], "locality": r[1], "commune": r[2], "county": r[3], "voivodeship": r[4]} for r in results
+        ]
+    }
