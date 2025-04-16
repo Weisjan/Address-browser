@@ -1,36 +1,48 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 import psycopg2
-import configparser
-from Backend.sql import query as qr
+import os
+from dotenv import load_dotenv
+from Backend.sql.queries import (
+    SEARCH_COUNTIES,
+    SEARCH_COMMUNES,
+    SEARCH_LOCALITIES,
+    SEARCH_STREETS
+)
 
 app = FastAPI(title="Address API", version="1.0")
 
-# Połączenie z Frontendem
+# Read configuration data from .env file
+def read_config():
+    load_dotenv("Backend/.env")
+    return {
+        "host": os.getenv("DB_HOST"),
+        "database": os.getenv("DB_NAME"),
+        "user": os.getenv("DB_USER"),
+        "password": os.getenv("DB_PASSWORD"),
+        "cors_origins": os.getenv("CORS_ORIGINS")
+    }
+
+config = read_config()
+
+# Connection with Frontend using CORS configuration from .env
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=config["cors_origins"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Odczytywanie danych konfiguracyjnych z pliku config.ini
-def read_config():
-    config = configparser.ConfigParser()
-    config.read("Backend/config/config.ini")
-    return config["DEFAULT"]
-
-config = read_config()
-
-# Połączenie z bazą danych
+# Database connection
 conn = psycopg2.connect(
     host=config["host"],
     database=config["database"],
     user=config["user"],
     password=config["password"]
 )
-#Endpoint do przeszukiwania adresów 
+
+# Endpoint for searching addresses
 @app.get("/szukaj")
 def search(
     q: str = Query(..., min_length=2),
@@ -40,7 +52,7 @@ def search(
     with conn.cursor() as cur:
 
         if typ == "powiat":
-            cur.execute(qr.SZUKAJ_POWIATOW, (f"%{q}%",))
+            cur.execute(SEARCH_COUNTIES, (f"%{q}%",))
             wyniki = cur.fetchall()
             return {
                 "typ": "powiat",
@@ -50,7 +62,7 @@ def search(
             }
 
         elif typ == "gmina":
-            cur.execute(qr.SZUKAJ_GMIN, (f"%{q}%",))
+            cur.execute(SEARCH_COMMUNES, (f"%{q}%",))
             wyniki = cur.fetchall()
             return {
                 "typ": "gmina",
@@ -60,7 +72,7 @@ def search(
             }
 
         elif typ == "miejscowość":
-            cur.execute(qr.SZUKAJ_MIEJSCOWOSCI, (f"%{q}%",))
+            cur.execute(SEARCH_LOCALITIES, (f"%{q}%",))
             wyniki = cur.fetchall()
             return {
                 "typ": "miejscowość",
@@ -70,7 +82,7 @@ def search(
             }
 
         elif typ == "ulica":
-            cur.execute(qr.SZUKAJ_ULIC, (f"%{q}%",))
+            cur.execute(SEARCH_STREETS, (f"%{q}%",))
             wyniki = cur.fetchall()
             return {
                 "typ": "ulica",
@@ -80,4 +92,3 @@ def search(
             }
 
     return {"typ": "brak wyników"}
-
