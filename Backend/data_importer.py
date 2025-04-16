@@ -3,7 +3,8 @@ import json
 import psycopg2
 from psycopg2 import IntegrityError
 import requests
-import configparser
+import os
+from dotenv import load_dotenv
 from sql.sequences import CREATE_SEQUENCES
 from sql.tables import (
     CREATE_TABLE_COUNTRY,
@@ -51,9 +52,14 @@ def create_tables(cursor):
 
 
 def read_config():
-    config = configparser.ConfigParser()
-    config.read('Backend/config/config.ini')
-    return config['DEFAULT']
+    load_dotenv('Backend/.env')
+    return {
+        'host': os.getenv('DB_HOST'),
+        'database': os.getenv('DB_NAME'),
+        'user': os.getenv('DB_USER'),
+        'password': os.getenv('DB_PASSWORD'),
+        'wsdl': os.getenv('WSDL_URL')
+    }
 
 
 def create_connection(config):
@@ -94,12 +100,6 @@ def safe_db_operation(cursor, operation_func, *args):
         cursor.execute("ROLLBACK")
         print(f"Error handling: {e}")
         return None
-
-
-# def fetch_id(cursor, query, params):
-#     """Executes a query to fetch an ID."""
-#     cursor.execute(query, params)
-#     return cursor.fetchone()
 
 
 def process_voivodeship(cursor, client, woj):
