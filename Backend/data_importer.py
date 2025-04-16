@@ -1,5 +1,6 @@
 import zeep
 import json
+import time
 import psycopg2
 from psycopg2 import IntegrityError
 import requests
@@ -88,6 +89,9 @@ def safe_service_call(service_function, *args):
             return result
         except requests.exceptions.ConnectionError as e:
             print(f"Error during service call: {e}. Retrying operation...")
+        except Exception as e:
+            print(f"Unexpected error: {e}. Retrying operation...")
+            time.sleep(10)
 
 
 def safe_db_operation(cursor, operation_func, *args):
