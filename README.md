@@ -64,10 +64,13 @@ address-browser/
 ├── Backend/
 │   ├── data_importer.py
 │   ├── search.py
-│   ├── config/
-│   │   └── config.ini
+│   ├── .env
 │   └── sql/
-│       └── query.py
+|       ├── insert.py
+|       ├── queries.py
+|       ├── select_ID.py
+|       ├── sequences.py
+│       └── tables.py
 │
 ├── address-search-app/
 │   ├── index.html
@@ -88,7 +91,7 @@ address-browser/
 | No  | File Name         | Details                                                              |
 | --- | ----------------- | -------------------------------------------------------------------- |
 | 1   | config.ini        | Przykładowy plik konfiguracyjny z danymi do połączenia z bazą i WSDL |
-| 2   | query.py          | Zawiera zapytania SQL do tworzenia tabel, sekwencji i wyszukiwania   |
+| 2   | sql/              | Zawiera zapytania SQL do tworzenia tabel, sekwencji i wyszukiwania   |
 | 3   | data_importer.py  | Importuje dane z usługi SOAP GUGiK i zapisuje je do bazy PostgreSQL  |
 | 4   | search.py         | Udostępnia REST API w FastAPI do przeszukiwania danych z bazy        |
 | 5   | requirements.txt  | Lista wymagań backendowych do instalacji przez pip                   |
