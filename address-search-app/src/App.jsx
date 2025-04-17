@@ -23,7 +23,7 @@ export default function App() {
 
       const endpoint = endpointMap[searchType];
       const response = await fetch(
-        `http://localhost:8000/search/${endpoint}?query=${encodeURIComponent(
+        `http://127.0.0.1:8000/search/${endpoint}?query=${encodeURIComponent(
           query
         )}`
       );
