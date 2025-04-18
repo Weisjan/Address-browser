@@ -88,7 +88,7 @@ button:hover {
   cursor: pointer;
 }
 
-#results {
+.results {
   margin-top: 30px;
 }
 
@@ -109,4 +109,43 @@ ul {
   list-style: none;
   padding: 0;
   margin-top: "16px";
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 5px;
+}
+
+.page-btn {
+  padding: 8px 12px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.page-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.page-btn.active {
+  background-color: #608abf;
+  color: white;
+  border-color: #608abf;
+}
+
+.page-btn:disabled {
+  background-color: #f8f8f8;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.results-info {
+  text-align: center;
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
 }

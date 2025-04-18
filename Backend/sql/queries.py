@@ -6,7 +6,6 @@ SEARCH_COUNTIES = """
     FROM powiat p
     JOIN wojewodztwo w ON p.id_wojewodztwa = w.id_wojewodztwa
     WHERE LOWER(p.nazwa) LIKE %s
-    LIMIT 20
 """
 
 SEARCH_COMMUNES = """
@@ -17,7 +16,6 @@ SEARCH_COMMUNES = """
     JOIN powiat p ON g.id_powiatu = p.id_powiatu
     JOIN wojewodztwo w ON p.id_wojewodztwa = w.id_wojewodztwa
     WHERE LOWER(g.nazwa) LIKE %s
-    LIMIT 20
 """
 
 SEARCH_LOCALITIES = """
@@ -30,7 +28,6 @@ SEARCH_LOCALITIES = """
     JOIN powiat p ON g.id_powiatu = p.id_powiatu
     JOIN wojewodztwo w ON p.id_wojewodztwa = w.id_wojewodztwa
     WHERE LOWER(m.nazwa) LIKE %s
-    LIMIT 20
 """
 
 SEARCH_STREETS = """
@@ -45,5 +42,4 @@ SEARCH_STREETS = """
     JOIN powiat p ON g.id_powiatu = p.id_powiatu
     JOIN wojewodztwo w ON p.id_wojewodztwa = w.id_wojewodztwa
     WHERE LOWER(u.nazwa) LIKE %s
-    LIMIT 20
 """

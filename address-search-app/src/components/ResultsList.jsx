@@ -1,47 +1,97 @@
-export default function ResultsList({ results, type }) {
+export default function ResultsList({
+  results,
+  type,
+  currentPage,
+  totalPages,
+  totalResults,
+  onPageChange,
+}) {
   if (!results || results.length === 0) {
-    return <p>Brak wyników.</p>;
+    return <p>No results.</p>;
   }
 
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+  const startResult = (currentPage - 1) * 5 + 1;
+  const endResult = Math.min(currentPage * 5, totalResults);
+
   return (
-    <div id="results">
-      <h3>Wyniki: {type}</h3>
+    <div className="results">
+      <h3>Results: {type}</h3>
+
+      <div className="results-info">
+        Shown {startResult}-{endResult} from {totalResults} results
+      </div>
+
       <ul>
         {results.map((item, idx) => (
           <li key={idx} className="result-item">
-            {type === "powiat" && (
+            {type === "county" && (
               <>
-                <strong>Powiat:</strong> {item.powiat} <br />
-                <strong>Województwo:</strong> {item.wojewodztwo}
+                <strong>County:</strong> {item.county} <br />
+                <strong>Voivodeship:</strong> {item.voivodeship}
               </>
             )}
-            {type === "gmina" && (
+            {type === "commune" && (
               <>
-                <strong>Gmina:</strong> {item.gmina} <br />
-                <strong>Powiat:</strong> {item.powiat} <br />
-                <strong>Województwo:</strong> {item.wojewodztwo}
+                <strong>Commune:</strong> {item.commune} <br />
+                <strong>County:</strong> {item.county} <br />
+                <strong>Voivodeship:</strong> {item.voivodeship}
               </>
             )}
-            {type === "miejscowość" && (
+            {type === "locality" && (
               <>
-                <strong>Miejscowość:</strong> {item.miejscowość} <br />
-                <strong>Gmina:</strong> {item.gmina} <br />
-                <strong>Powiat:</strong> {item.powiat} <br />
-                <strong>Województwo:</strong> {item.wojewodztwo}
+                <strong>Locality:</strong> {item.locality} <br />
+                <strong>Commune:</strong> {item.commune} <br />
+                <strong>County:</strong> {item.county} <br />
+                <strong>Voivodeship:</strong> {item.voivodeship}
               </>
             )}
-            {type === "ulica" && (
+            {type === "street" && (
               <>
-                <strong>Ulica:</strong> {item.ulica} <br />
-                <strong>Miejscowość:</strong> {item.miejscowość} <br />
-                <strong>Gmina:</strong> {item.gmina} <br />
-                <strong>Powiat:</strong> {item.powiat} <br />
-                <strong>Województwo:</strong> {item.wojewodztwo}
+                <strong>Street:</strong> {item.street} <br />
+                <strong>Locality:</strong> {item.locality} <br />
+                <strong>Commune:</strong> {item.commune} <br />
+                <strong>County:</strong> {item.county} <br />
+                <strong>Voivodeship:</strong> {item.voivodeship}
               </>
             )}
           </li>
         ))}
       </ul>
+
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="page-btn"
+          >
+            &laquo; Previous
+          </button>
+
+          {pageNumbers.map((number) => (
+            <button
+              key={number}
+              onClick={() => onPageChange(number)}
+              className={`page-btn ${currentPage === number ? "active" : ""}`}
+            >
+              {number}
+            </button>
+          ))}
+
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="page-btn"
+          >
+            Next &raquo;
+          </button>
+        </div>
+      )}
     </div>
   );
 }

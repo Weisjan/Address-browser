@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function SearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
-  const [type, setType] = useState("miejscowosc");
+  const [type, setType] = useState("locality");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,13 +14,13 @@ export default function SearchBar({ onSearch }) {
       <input
         className="search-input"
         type="text"
-        placeholder="Wpisz zapytanie..."
+        placeholder="Enter your query"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
 
       <div className="radio-group">
-        {["ulica", "miejscowość", "gmina", "powiat"].map((value) => (
+        {["street", "locality", "commune", "county"].map((value) => (
           <label
             key={value}
             className={`radio-option ${type === value ? "active" : ""}`}
@@ -36,7 +36,7 @@ export default function SearchBar({ onSearch }) {
         ))}
       </div>
 
-      <button type="submit">Szukaj</button>
+      <button type="submit">Search</button>
     </form>
   );
 }

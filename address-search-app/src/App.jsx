@@ -6,12 +6,15 @@ export default function App() {
   const [searchResults, setSearchResults] = useState({ results: [], type: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const resultsPerPage = 5;
 
   const handleSearch = async (query, searchType) => {
     if (query.length < 2) return;
 
     setIsLoading(true);
     setError(null);
+    setCurrentPage(1);
 
     try {
       const endpointMap = {
@@ -42,17 +45,32 @@ export default function App() {
     }
   };
 
+  const indexOfLastResult = currentPage * resultsPerPage;
+  const indexOfFirstResult = indexOfLastResult - resultsPerPage;
+  const currentResults = searchResults.results.slice(
+    indexOfFirstResult,
+    indexOfLastResult
+  );
+  const totalPages = Math.ceil(searchResults.results.length / resultsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div className="container">
       <h1>Address Search</h1>
       <SearchBar onSearch={handleSearch} />
-
-      {isLoading && <div className="loading">Loading results...</div>}
-      {error && <div className="error">Error: {error}</div>}
+      {isLoading && <div className="result">Loading results...</div>}
+      {error && <div className="result">Error: {error}</div>}
       {!isLoading && !error && (
         <ResultsList
-          results={searchResults.results}
+          results={currentResults}
           type={searchResults.type}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalResults={searchResults.results.length}
+          onPageChange={handlePageChange}
         />
       )}
     </div>
