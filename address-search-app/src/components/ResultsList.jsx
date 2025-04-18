@@ -7,7 +7,7 @@ export default function ResultsList({
   onPageChange,
 }) {
   if (!results || results.length === 0) {
-    return <p>No results.</p>;
+    return <p className="mt-6">No results.</p>;
   }
 
   const startResult = (currentPage - 1) * 5 + 1;
@@ -17,14 +17,18 @@ export default function ResultsList({
     <button
       key={pageNumber}
       onClick={() => onPageChange(pageNumber)}
-      className={`page-btn ${currentPage === pageNumber ? "active" : ""}`}
+      className={`px-4 py-2 border-2 rounded-full cursor-pointer select-none text-sm transition-all ${
+        currentPage === pageNumber
+          ? "bg-[#608abf] text-white border-[#608abf]"
+          : "bg-gray-100 text-gray-700 border-gray-300 hover:border-[#608abf] hover:text-[#608abf]"
+      }`}
     >
       {pageNumber}
     </button>
   );
 
   const renderEllipsis = (key) => (
-    <span key={`ellipsis-${key}`} className="ellipsis">
+    <span key={`ellipsis-${key}`} className="mx-1 font-bold">
       ...
     </span>
   );
@@ -105,27 +109,34 @@ export default function ResultsList({
   };
 
   return (
-    <div className="results">
-      <h3>Results: {type}</h3>
+    <div className="mt-8">
+      <h3 className="text-xl font-semibold mb-4">Results: {type}</h3>
 
-      <div className="results-info">
+      <div className="text-center text-gray-600 mb-4 text-sm">
         Shown {startResult}-{endResult} from {totalResults} results
       </div>
 
-      <ul>
+      <ul className="mt-4 space-y-3">
         {results.map((item, idx) => (
-          <li key={idx} className="result-item">
+          <li
+            key={idx}
+            className="p-4 bg-gray-50 rounded-lg border-b border-gray-200 hover:bg-gray-100 transition-colors"
+          >
             {renderResultItem(item)}
           </li>
         ))}
       </ul>
 
       {totalPages > 1 && (
-        <div className="pagination">
+        <div className="flex justify-center mt-6 gap-1">
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="page-btn"
+            className={`px-4 py-2 border-2 rounded-full cursor-pointer select-none text-sm transition-all ${
+              currentPage === 1
+                ? "bg-gray-50 text-gray-300 cursor-not-allowed"
+                : "bg-gray-100 text-gray-700 border-gray-300 hover:border-[#608abf] hover:text-[#608abf]"
+            }`}
           >
             &laquo; Previous
           </button>
@@ -135,7 +146,11 @@ export default function ResultsList({
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="page-btn"
+            className={`px-4 py-2 border-2 rounded-full cursor-pointer select-none text-sm transition-all ${
+              currentPage === totalPages
+                ? "bg-gray-50 text-gray-300 cursor-not-allowed"
+                : "bg-gray-100 text-gray-700 border-gray-300 hover:border-[#608abf] hover:text-[#608abf]"
+            }`}
           >
             Next &raquo;
           </button>

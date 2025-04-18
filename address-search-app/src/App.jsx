@@ -58,21 +58,25 @@ export default function App() {
   };
 
   return (
-    <div className="container">
-      <h1>Address Search</h1>
-      <SearchBar onSearch={handleSearch} />
-      {isLoading && <div className="result">Loading results...</div>}
-      {error && <div className="result">Error: {error}</div>}
-      {!isLoading && !error && (
-        <ResultsList
-          results={currentResults}
-          type={searchResults.type}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalResults={searchResults.results.length}
-          onPageChange={handlePageChange}
-        />
-      )}
+    <div className="min-h-screen bg-[aliceblue] font-montserrat p-10">
+      <div className="font-montserrat max-w-[800px] mx-auto bg-white p-8 rounded-[10px] shadow-md">
+        <h1 className="text-2xl font-bold mb-6">Address Search</h1>
+        <SearchBar onSearch={handleSearch} />
+        {isLoading && (
+          <div className="mt-6 text-gray-600">Loading results...</div>
+        )}
+        {error && <div className="mt-6 text-red-500">Error: {error}</div>}
+        {!isLoading && !error && (
+          <ResultsList
+            results={currentResults}
+            type={searchResults.type}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalResults={searchResults.results.length}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </div>
     </div>
   );
 }
