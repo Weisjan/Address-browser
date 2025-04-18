@@ -36,7 +36,9 @@ export default function SearchBar({ onSearch }) {
         ))}
       </div>
 
-      <button type="submit">Search</button>
+      <button className="searchbutton" type="submit">
+        Search
+      </button>
     </form>
   );
 }

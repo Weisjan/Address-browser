@@ -33,7 +33,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Database connection management
 @contextmanager
 def get_db_cursor():
     conn = psycopg2.connect(
@@ -67,7 +66,6 @@ def search_counties(
         ]
     }
 
-# Commune endpoint
 @app.get("/search/communes")
 def search_communes(
     query: str = Query(..., min_length=2, description="Search term for communes"),
@@ -83,7 +81,6 @@ def search_communes(
         ]
     }
 
-# Locality endpoint
 @app.get("/search/localities")
 def search_localities(
     query: str = Query(..., min_length=2, description="Search term for localities"),
@@ -99,7 +96,6 @@ def search_localities(
         ]
     }
 
-# Street endpoint
 @app.get("/search/streets")
 def search_streets(
     query: str = Query(..., min_length=2, description="Search term for streets"),

@@ -71,7 +71,7 @@ body {
   display: none;
 }
 
-button {
+.searchbutton {
   padding: 12px 24px;
   font-size: 16px;
   background-color: #608abf;
@@ -82,7 +82,7 @@ button {
   transition: box-shadow 0.2s linear;
 }
 
-button:hover {
+.searchbutton:hover {
   box-shadow: 0 0 5px grey;
   background-color: #608abf;
   cursor: pointer;
@@ -119,16 +119,20 @@ ul {
 }
 
 .page-btn {
-  padding: 8px 12px;
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px 18px;
+  border: 3px solid #ccc;
+  border-radius: 1000px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  user-select: none;
+  font-size: 14px;
+  transition: all 0.2s;
+  background-color: #f3f4f6;
+  color: #333;
 }
 
 .page-btn:hover {
-  background-color: #e0e0e0;
+  border-color: #608abf;
+  color: #608abf;
 }
 
 .page-btn.active {
@@ -148,4 +152,9 @@ ul {
   color: #666;
   margin-bottom: 15px;
   font-size: 0.9rem;
+}
+
+.ellipsis {
+  margin: 0 5px;
+  font-weight: bold;
 }
