@@ -26,7 +26,7 @@ export default function SearchBar({ onSearch }) {
             className={`px-5 py-2 border-2 rounded-full cursor-pointer select-none text-sm transition-all ${
               type === value
                 ? "bg-[#608abf] text-white border-[#608abf]"
-                : "bg-[#f3f4f6] text-gray-700 border-gray-300 hover:border-[#608abf] hover:text-[#608abf]"
+                : "bg-gray-50 text-gray-700 border-gray-300 hover:border-[#608abf] hover:text-[#608abf]"
             }`}
           >
             <input

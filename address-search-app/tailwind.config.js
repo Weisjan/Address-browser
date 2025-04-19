@@ -4,9 +4,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        montserrat: ["Montserrat", "sans-serif"],
+        montserrat: ["Montserrat", "Arial", "sans-serif"],
+      },
+      boxShadow: {
+        custom: "0 0 10px grey",
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };

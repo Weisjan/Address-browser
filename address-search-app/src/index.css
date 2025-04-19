@@ -1,1 +1,15 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[aliceblue] font-['Montserrat',_Arial,_sans-serif] p-10 m-0;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-[650px] mx-auto bg-white p-8 rounded-[10px] shadow-md;
+  }
+}

@@ -8,7 +8,13 @@ from Backend.sql.queries import (
     SEARCH_COUNTIES,
     SEARCH_COMMUNES,
     SEARCH_LOCALITIES,
-    SEARCH_STREETS
+    SEARCH_STREETS,
+    GET_VOIVODESHIPS,
+    GET_COUNTIES_BY_VOIVODESHIP,
+    GET_COMMUNES_BY_COUNTY,
+    GET_LOCALITIES_BY_COMMUNE,
+    GET_STREETS_BY_LOCALITY,
+    GET_ADDRESSES_BY_STREET,
 )
 
 app = FastAPI(title="Address API", version="1.0")
@@ -108,5 +114,86 @@ def search_streets(
         "type": "street",
         "results": [
             {"street": r[0], "locality": r[1], "commune": r[2], "county": r[3], "voivodeship": r[4]} for r in results
+        ]
+    }
+
+@app.get("/browse/voivodeship")
+def browse_voivodeships(cursor = Depends(get_cursor)):
+    cursor.execute(GET_VOIVODESHIPS)
+    results = cursor.fetchall()
+    
+    return {
+        "items": [
+            {"id": r[0], "name": r[1]} for r in results
+        ]
+    }
+
+@app.get("/browse/county")
+def browse_counties(
+    voivodeship_id: int = Query(..., description="ID of the voivodeship"),
+    cursor = Depends(get_cursor)
+):
+    cursor.execute(GET_COUNTIES_BY_VOIVODESHIP, (voivodeship_id,))
+    results = cursor.fetchall()
+    
+    return {
+        "items": [
+            {"id": r[0], "name": r[1], "info": f"Voivodeship: {r[2]}"} for r in results
+        ]
+    }
+
+@app.get("/browse/commune")
+def browse_communes(
+    county_id: int = Query(..., description="ID of the county"),
+    cursor = Depends(get_cursor)
+):
+    cursor.execute(GET_COMMUNES_BY_COUNTY, (county_id,))
+    results = cursor.fetchall()
+    
+    return {
+        "items": [
+            {"id": r[0], "name": r[1], "info": f"County: {r[2]}"} for r in results
+        ]
+    }
+
+@app.get("/browse/locality")
+def browse_localities(
+    commune_id: int = Query(..., description="ID of the commune"),
+    cursor = Depends(get_cursor)
+):
+    cursor.execute(GET_LOCALITIES_BY_COMMUNE, (commune_id,))
+    results = cursor.fetchall()
+    
+    return {
+        "items": [
+            {"id": r[0], "name": r[1], "info": f"Commune: {r[2]}"} for r in results
+        ]
+    }
+
+@app.get("/browse/street")
+def browse_streets(
+    locality_id: int = Query(..., description="ID of the locality"),
+    cursor = Depends(get_cursor)
+):
+    cursor.execute(GET_STREETS_BY_LOCALITY, (locality_id,))
+    results = cursor.fetchall()
+    
+    return {
+        "items": [
+            {"id": r[0], "name": r[1], "info": f"Locality: {r[2]}"} for r in results
+        ]
+    }
+
+@app.get("/browse/address")
+def browse_addresses(
+    street_id: int = Query(..., description="ID of the street"),
+    cursor = Depends(get_cursor)
+):
+    cursor.execute(GET_ADDRESSES_BY_STREET, (street_id,))
+    results = cursor.fetchall()
+    
+    return {
+        "items": [
+            {"id": r[0], "number": r[1], "info": f"Locality: {r[2]}"} for r in results
         ]
     }
