@@ -155,7 +155,7 @@ export default function BrowseAddress() {
             setCurrentLevel("voivodeship");
             fetchData("voivodeship");
           }}
-          className="text-blue-600 hover:underline font-medium"
+          className="text-[#608abf] hover:underline font-medium"
         >
           Home
         </button>
@@ -165,7 +165,7 @@ export default function BrowseAddress() {
             <span className="mx-2 text-gray-400">/</span>
             <button
               onClick={() => handleNavigateBack(index - 1)}
-              className="text-blue-600 hover:underline font-medium"
+              className="text-[#608abf] hover:underline font-medium"
             >
               {item.name}
             </button>

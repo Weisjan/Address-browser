@@ -61,7 +61,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[aliceblue] font-['Montserrat',_Arial,_sans-serif] py-10 px-5 m-0">
-      <div className="max-w-[650px] mx-auto bg-white p-8 rounded-[10px] shadow-md">
+      <div className="max-w-[750px] mx-auto bg-white p-8 rounded-[10px] shadow-md">
         <h1 className="text-2xl font-bold mb-6">Address Search</h1>
 
         <div className="flex mb-6 border-b">
