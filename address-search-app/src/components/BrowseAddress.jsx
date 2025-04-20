@@ -126,13 +126,13 @@ export default function BrowseAddress() {
 
   const renderItemContent = (item) => {
     if (currentLevel === "address") {
+      const streetName = hierarchy[hierarchy.length - 1]?.name || "";
+
       return (
         <>
-          <p className="font-medium">
-            {item.number} {hierarchy[hierarchy.length - 1]?.name}
-          </p>
-          {item.postal_code && (
-            <p className="text-sm text-gray-600 mt-1">{item.postal_code}</p>
+          <p className="font-medium">{item.number}</p>
+          {streetName && (
+            <p className="text-sm text-gray-600 mt-1">{streetName}</p>
           )}
         </>
       );
@@ -184,11 +184,8 @@ export default function BrowseAddress() {
           {items.map((item) => (
             <div
               key={item.id}
-              className={`p-4 bg-gray-50 rounded-lg border border-gray-200 ${
-                currentLevel !== "address"
-                  ? "hover:bg-gray-100 hover:border-gray-300"
-                  : ""
-              } transition-colors text-left`}
+              className={`p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 hover:border-gray-300
+               transition-colors text-left`}
             >
               {currentLevel !== "address" ? (
                 <button
@@ -199,17 +196,6 @@ export default function BrowseAddress() {
                 </button>
               ) : (
                 renderItemContent(item)
-              )}
-
-              {currentLevel === "address" && (
-                <div className="mt-2 pt-2 border-t border-gray-200">
-                  <p className="text-sm">
-                    <span className="font-medium">Full address:</span>{" "}
-                    {item.number} {hierarchy[hierarchy.length - 1]?.name},{" "}
-                    {hierarchy[hierarchy.length - 2]?.name}
-                    {item.postal_code && `, ${item.postal_code}`}
-                  </p>
-                </div>
               )}
             </div>
           ))}
