@@ -91,8 +91,12 @@ export default function App() {
           <>
             <SearchBar onSearch={handleSearch} />
             {isLoading && (
-              <div className="mt-6 text-gray-600">Loading results...</div>
+              <div className="mt-6 flex items-center gap-2 text-gray-600">
+                <div className="w-5 h-5 border-2 border-t-transparent border-[#608abf] rounded-full animate-spin"></div>
+                <span>Loading results...</span>
+              </div>
             )}
+
             {error && <div className="mt-6 text-red-500">Error: {error}</div>}
             {!isLoading && !error && (
               <ResultsList

@@ -175,7 +175,12 @@ export default function BrowseAddress() {
 
       <h3 className="text-xl font-semibold mb-4">{getLevelTitle()}</h3>
 
-      {isLoading && <div className="p-4 text-gray-600">Loading...</div>}
+      {isLoading && (
+        <div className="mt-6 flex items-center gap-2 text-gray-600">
+          <div className="w-5 h-5 border-2 border-t-transparent border-[#608abf] rounded-full animate-spin"></div>
+          <span>Loading...</span>
+        </div>
+      )}
 
       {error && <div className="p-4 text-red-500">Error: {error}</div>}
 
