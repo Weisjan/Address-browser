@@ -1,6 +1,6 @@
 # Address Browser
 
-Address Browser is a full-stack web application for importing, storing, and querying hierarchical address data from Polish public services (GUGiK). The application features a Python-based backend (FastAPI), a PostgreSQL database for relational data storage, and a modern React frontend for an intuitive user experience.
+Address Browser is a full-stack web application forquerying hierarchical address data from Polish public services (GUGiK). The application features a Python-based backend (FastAPI), a PostgreSQL database for relational data storage, and a modern React frontend for an intuitive user experience.
 
 ## Table of Contents
 
